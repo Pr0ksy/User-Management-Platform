@@ -43,5 +43,5 @@ $conn = new mysqli("localhost", "root", "", "usermanagement");
 - FontAwesome icons
 
 ## 📜 License
-MIT License © 2025 Pr0ksz
+MIT License © 2025 Pr0ksy
 
