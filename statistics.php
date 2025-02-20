@@ -1,4 +1,5 @@
 <?php
+// XXXXXXX THIS PAGE IS UNDER CONSTRUCTION XXXXXXX
 session_start();
 
 if (!isset($_SESSION['username'])) {
@@ -26,7 +27,6 @@ if ($is_banned == 1) {
     exit();
 }
 
-// ✅ Provera da li je korisnik platio
 $query = "SELECT is_paid FROM users WHERE username = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("s", $username);
@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_account'])) {
     }
 }
 
-$email = ""; // Postavljamo podrazumevanu vrednost kako bi izbegli grešku
+$email = "";
 
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
@@ -139,7 +139,6 @@ $stmt->bind_result($email, $created_at);
 $stmt->fetch();
 $stmt->close();
 
-// Formatiranje datuma
 $formatted_date = date('d.m.Y', strtotime($created_at));
 ?>
 
