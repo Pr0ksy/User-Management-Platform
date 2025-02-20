@@ -2,9 +2,9 @@
 session_start();
 include 'db_config.php';
 
-$error = ""; // Promenljiva za prikaz grešaka
-$max_attempts = 5; // Maksimalan broj neuspelih pokušaja
-$block_time = 600; // Vreme blokade u sekundama (10 minuta)
+$error = "";
+$max_attempts = 5; 
+$block_time = 600;
 
 if (isset($_SESSION['username'])) {
     header("Location: dashboard.php");
@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pass = $_POST['password'];
     $ip_address = $_SERVER['REMOTE_ADDR'];
 
-    // Proveri koliko neuspelih pokušaja ima korisnik u poslednjih 10 minuta
     $stmt = $conn->prepare("SELECT COUNT(*) FROM user_logs WHERE username=? AND success=0 AND login_time > NOW() - INTERVAL ? SECOND");
     $stmt->bind_param("si", $user, $block_time);
     $stmt->execute();
@@ -27,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($failed_attempts >= $max_attempts) {
         $error = "Vaš nalog je privremeno blokiran zbog previše neuspelih pokušaja. Pokušajte ponovo kasnije.";
     } else {
-        // Proveri da li korisnik postoji
         $sql = "SELECT * FROM users WHERE username=? OR email=?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ss", $user, $user);
@@ -41,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['full_name'] = $row['full_name'];
                 $_SESSION['role'] = $row['role'];
 
-                // Uspešan login – resetuj pokušaje
                 $stmt = $conn->prepare("INSERT INTO user_logs (username, ip_address, success) VALUES (?, ?, 1)");
                 $stmt->bind_param("ss", $user, $ip_address);
                 $stmt->execute();
@@ -49,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: dashboard.php");
                 exit();
             } else {
-                // Neuspešan pokušaj – zabeleži u user_logs
                 $stmt = $conn->prepare("INSERT INTO user_logs (username, ip_address, success) VALUES (?, ?, 0)");
                 $stmt->bind_param("ss", $user, $ip_address);
                 $stmt->execute();
