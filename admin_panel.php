@@ -57,10 +57,10 @@ if (isset($_POST['update_payment_status'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['ban'])) {
         $user_id = intval($_POST['user_id']);
-        $is_banned = 1; // Ban korisnika
+        $is_banned = 1;
     } elseif (isset($_POST['unban'])) {
         $user_id = intval($_POST['user_id']);
-        $is_banned = 0; // Unban korisnika
+        $is_banned = 0;
     }
 
     if (isset($is_banned)) {
