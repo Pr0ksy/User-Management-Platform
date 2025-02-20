@@ -5,7 +5,6 @@ include 'db_config.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conn->real_escape_string($_POST['email']);
 
-    // Provera da li email postoji u bazi
     $sql = "SELECT * FROM users WHERE email=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
@@ -13,17 +12,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Generisanje jedinstvenog tokena
         $token = bin2hex(random_bytes(50));
-        $expires = time() + 3600; // Token važi 1 sat
+        $expires = time() + 3600;
 
-        // Upisivanje tokena u bazu
         $update = "UPDATE users SET reset_token=?, reset_expires=? WHERE email=?";
         $stmt = $conn->prepare($update);
         $stmt->bind_param("sis", $token, $expires, $email);
         $stmt->execute();
 
-        // Slanje emaila (OVDE UBACI SMTP KONFIGURACIJU)
         $reset_link = "http://localhost/usermanagement/reset_password.php?token=" . $token;
         $to = $email;
         $subject = "Resetovanje lozinke";
