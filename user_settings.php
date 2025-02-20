@@ -8,12 +8,10 @@ if (!isset($_SESSION['username'])) {
 
 include('db_config.php');
 
-// ✅ Postavljamo username ODMAH na početku
 $username = $_SESSION['username'];
 $full_name = $_SESSION['full_name'];
 $role = $_SESSION['role'];
 
-// ✅ Provera da li je korisnik banovan
 $query = "SELECT is_banned FROM users WHERE username = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("s", $username);
@@ -28,7 +26,6 @@ if ($is_banned == 1) {
     exit();
 }
 
-// ✅ Provera da li je korisnik platio
 $query = "SELECT is_paid FROM users WHERE username = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("s", $username);
@@ -89,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_account'])) {
     }
 }
 
-$email = ""; // Postavljamo podrazumevanu vrednost kako bi izbegli grešku
+$email = "";
 
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
