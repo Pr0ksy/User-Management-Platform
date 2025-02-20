@@ -23,12 +23,10 @@ if (isset($_POST['register'])) {
     }
 }
 
-// Login
 if (isset($_POST['login'])) {
     $user = $conn->real_escape_string($_POST['username']); 
     $pass = $_POST['password'];
     
-    // 🔍 Dobijamo korisnika iz baze
     $sql = "SELECT id, username, full_name, password, role, is_banned FROM users WHERE username=? OR email=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $user, $user);
@@ -68,7 +66,6 @@ if (isset($_POST['login'])) {
 
 
 
-//Logout
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: login.php");
