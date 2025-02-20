@@ -2,6 +2,8 @@
 
 A user management system with authentication, task assignment, and an admin panel. Built with PHP and MySQL.
 
+⚠️ Note: This project is still under development. Some features may not be fully implemented.
+
 ## 🚀 Features
 - ✅ User registration and login
 - ✅ Admin panel for user management
